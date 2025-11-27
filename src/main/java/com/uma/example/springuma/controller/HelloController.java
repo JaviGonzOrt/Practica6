@@ -5,20 +5,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.uma.example.springuma.model.Cuenta;
 
 @RestController
 public class HelloController {  
-  
-  @GetMapping("/hello")
-  public String index() {
-    return "Ingenieria del Software, UMA";
-  }
-
-  @GetMapping("/get_cuenta")
-  public Cuenta cuenta() {
-    return new Cuenta(123);
-  }
 
   @GetMapping("/nombre")
   public String hello(@RequestParam(value = "name", defaultValue = "cristian") String name) {
