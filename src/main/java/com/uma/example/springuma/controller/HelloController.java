@@ -13,7 +13,7 @@ public class HelloController {
   public String hello(@RequestParam(value = "name", defaultValue = "cristian") String name) {
     return String.format("Hola alumno %s!", name);
   }
-
+ 
   @GetMapping("/nombre/{name}")
   public String get(@PathVariable("name") String name) {
     return String.format("Hola alumno has pasado el path %s!", name);
