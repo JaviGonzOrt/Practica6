@@ -16,38 +16,34 @@ public class MedicamentoService {
         return RepositoryMedicamento.findAll();
     }
 
-    // Devuelve una persona por ID
+    // Devuelve un medicamento por ID
     public Medicamento getMedicamento(Long id){
         return RepositoryMedicamento.getReferenceById(id);
     }
 
-    // Crea una persona
+    // Crea un medicamento
     public Medicamento addMedicamento(Medicamento c){
         return RepositoryMedicamento.saveAndFlush(c);
     }
 
-    //  Actualiza una persona
+    //  Actualiza un medicamento
     public void updateMedicamento(Medicamento m){
         Medicamento medicamento = RepositoryMedicamento.getReferenceById(m.getId());
-		medicamento.
-
+		medicamento.setId(m.getId());
+        medicamento.setFrecuencia(m.getFrecuencia());
+        medicamento.setDosis(m.getDosis());
         medicamento.setNombre(m.getNombre());
-        repositoryMedicamento.save(Medicamento);
+        medicamento.setFechaPrimeraToma(m.getFechaPrimeraToma());
+        RepositoryMedicamento.save(medicamento);
     }
 
-    // Elimina una persona
-    public void removePersona(Persona c){
-        repositoryPersona.delete(c);
+    // Elimina una medicamento
+    public void removeMedicamento(Medicamento m){
+        RepositoryMedicamento.delete(m);
     }
 
-    // Elimina una persona por ID
-    public void removePersonaID(Long id){
-        repositoryPersona.deleteById(id);
+    // Elimina un medicamento por ID
+    public void removeMedicamentoID(Long id){
+        RepositoryMedicamento.deleteById(id);
     }
-}
-
-
-
-
-    
 }
