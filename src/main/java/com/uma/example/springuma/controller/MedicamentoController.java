@@ -21,28 +21,28 @@ public class MedicamentoController {
     @Autowired
     private MedicamentoService medicamentoService;
 
-    // Devuelve todas las personas
+    // Devuelve todas las medicamentos
     @GetMapping("/medicamentos")
     public List<Medicamento> getMedicamentos(){
         return medicamentoService.getAllMedicamentos();
     }
 
-    // Devuelve una persona por ID
+    // Devuelve un medicamento por ID
     @GetMapping("/medicamento/{id}")
     public Medicamento getMedicamento(@PathVariable("id") Long id) {
         return medicamentoService.getMedicamento(id);
     }
 
-    // Crea una persona con el objeto Persona recibido en formato JSON
-    @PostMapping
+    // Crea un medicamento con el objeto Medicamento recibido en formato JSON
+    @PostMapping("/medicamento")
     public Medicamento crearMedicamento(@RequestBody Medicamento medicamento) {
         // La información del medicamento se envía en el cuerpo (body) de la petición HTTP
         return medicamentoService.addMedicamento(medicamento);
     }
 
-    // Actualiza una persona con el objeto Persona
+    // Actualiza una medicamento con el objeto Medicamento
     @PutMapping("/medicamento")
-    public ResponseEntity<?> updateMedicamento (Medicamento medicamento) {
+    public ResponseEntity<?> updateMedicamento (@RequestBody Medicamento medicamento) {
         try{
             medicamentoService.updateMedicamento(medicamento);
             return ResponseEntity.ok().body("El medicamento se ha actualizado");
@@ -52,9 +52,9 @@ public class MedicamentoController {
         }
     }
     
-    // Elimina una persona pasando el objeto Persona
-    @DeleteMapping("/mediacemento")
-    public ResponseEntity<?> deletePersona(@RequestBody Medicamento medicamento){
+    // Elimina un medicamento pasando el objeto Medicamento
+    @DeleteMapping("/medicamento")
+    public ResponseEntity<?> deleteMedicamento(@RequestBody Medicamento medicamento){
         try{
             medicamentoService.removeMedicamento(medicamento);
             return ResponseEntity.ok().body("El medicamento se ha eliminado");
@@ -64,9 +64,9 @@ public class MedicamentoController {
         }
     }
 
-    // Otra forma de eliminar una persona con el ID
+    // Otra forma de eliminar un medicamento con el ID
     @DeleteMapping("/medicamento/{id}")
-    public ResponseEntity<?> deletePersona(@PathVariable("id") Long id) {
+    public ResponseEntity<?> deleteMedicamento(@PathVariable("id") Long id) {
         try{
             medicamentoService.removeMedicamentoID(id);
             return ResponseEntity.ok().body("El medicamento se ha eliminado");
@@ -75,5 +75,6 @@ public class MedicamentoController {
             return ResponseEntity.internalServerError().body("Error al eliminar el medicamento");
         }
     }
+
     
 }
