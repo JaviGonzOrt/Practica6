@@ -2,12 +2,16 @@ package com.uma.example.springuma.model;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -20,6 +24,8 @@ public class Medicamento {
     private String nombre;
     private float dosis;
     private int frecuencia;
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fechaPrimeraToma;
 
     public Long getId() {
@@ -61,12 +67,4 @@ public class Medicamento {
     public void setFechaPrimeraToma(Date fechaPrimeraToma) {
         this.fechaPrimeraToma = fechaPrimeraToma;
     }
-
-
-
-
-
-
-
-
 }
