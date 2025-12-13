@@ -47,7 +47,7 @@ public class  MedicamentoController {
     }
 
 
-	/*---Elimina una cuenta a partir de su ID y vuelve a la pantalla de listar cuentas---*/
+	/*---Elimina un medicamento a partir de su ID y vuelve a la pantalla de listar medicamentos---*/
 	@DeleteMapping("/medicamento/{id}")
     public ResponseEntity<?> deleteMedicamento(@PathVariable("id") Long id, HttpServletResponse response) {
         try {

@@ -21,14 +21,14 @@ public class MedicamentoViewController {
 		return "indexM";
 	}
 
-	/*---Devuelve el formulario para anyadir una nueva cuenta con una cuenta vacia---*/
+	/*---Devuelve el formulario para anyadir un nuevo medicamento con un medicamento vacio---*/
 	@GetMapping("/addMedicamento")
 	public String addMedicamentoView(Model model) {
 		model.addAttribute("medicamento", new Medicamento());
 		return "addMedicamento";
 	}
 
-	/*---Devuelve el formulario para listar las cuentas del sistema---*/
+	/*---Devuelve el formulario para listar los medicamentos del sistema---*/
 	@GetMapping("/listMedicamento")
 	public String listMedicamentoView(Model model) {
 
