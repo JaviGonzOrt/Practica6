@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width" />
+<title>Editar Medicamento</title>
+</head>
+<body>
+	    <h1>Editar Medicamento</h1>
+			<form   th:object="${medicamento}"
+				th:action="@{/medicamento}" th:method="put" style="margin: 10px">
+        
+				<p><label>ID</label> <input type="number"
+									th:field="${medicamento.id}"
+									autofocus="autofocus" readonly placeholder="ID"/></p>
+		
+				<p><label>Nombre</label> <input type="text"
+									th:field="${medicamento.nombre}"
+									autofocus="autofocus" placeholder="Nombre"/> </p>
+					
+				<p><label>Dosis</label> <input type="number"
+									th:field="${medicamento.dosis}"
+									autofocus="autofocus" placeholder="Dosis"  /></p>
+                <p><label>Frecuencia</label> <input type="number"
+									th:field="${medicamento.frecuencia}"
+									autofocus="autofocus" placeholder="Frecuencia"  /></p>
+                <p><label>Fecha Primera Toma</label> <input type="date"
+									th:field="${medicamento.fechaPrimeraToma}"
+									autofocus="autofocus" placeholder="Fecha Primera Toma"  /></p>
+			
+				<button type="submit" >Guardar</button>
+					<a th:href="@{/listMedicamento}" >Atras</a>
+			</form>
+</body>
+</html>

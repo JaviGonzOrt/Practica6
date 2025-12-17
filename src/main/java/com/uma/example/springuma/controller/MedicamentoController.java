@@ -1,79 +1,66 @@
 package com.uma.example.springuma.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PostMapping;    
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uma.example.springuma.model.Medicamento;
 import com.uma.example.springuma.model.MedicamentoService;
 
-@RestController
-public class MedicamentoController {
+import jakarta.servlet.http.HttpServletResponse;
 
+@RestController
+public class  MedicamentoController {
+    
     @Autowired
     private MedicamentoService medicamentoService;
-
-    // Devuelve todas las personas
-    @GetMapping("/medicamentos")
-    public List<Medicamento> getMedicamentos(){
-        return medicamentoService.getAllMedicamentos();
-    }
-
-    // Devuelve una persona por ID
-    @GetMapping("/medicamento/{id}")
-    public Medicamento getMedicamento(@PathVariable("id") Long id) {
-        return medicamentoService.getMedicamento(id);
-    }
-
-    // Crea una persona con el objeto Persona recibido en formato JSON
-    @PostMapping
-    public Medicamento crearMedicamento(@RequestBody Medicamento medicamento) {
-        // La información del medicamento se envía en el cuerpo (body) de la petición HTTP
-        return medicamentoService.addMedicamento(medicamento);
-    }
-
-    // Actualiza una persona con el objeto Persona
-    @PutMapping("/medicamento")
-    public ResponseEntity<?> updateMedicamento (Medicamento medicamento) {
-        try{
-            medicamentoService.updateMedicamento(medicamento);
-            return ResponseEntity.ok().body("El medicamento se ha actualizado");
-        }
-        catch(Exception e){
-            return ResponseEntity.internalServerError().body("Error al actualizar el medicamento");
-        }
-    }
     
-    // Elimina una persona pasando el objeto Persona
-    @DeleteMapping("/mediacemento")
-    public ResponseEntity<?> deletePersona(@RequestBody Medicamento medicamento){
-        try{
-            medicamentoService.removeMedicamento(medicamento);
-            return ResponseEntity.ok().body("El medicamento se ha eliminado");
-        }
-        catch(Exception e){
-            return ResponseEntity.internalServerError().body("Error al eliminar el medicamento");
+    /*---Anade un nuevo medicamento al sistema y vuelve a la pantalla de listar medicamentos---*/
+    /* Se pone consumes = "application/x-www-form-urlencoded" para que funcione con formularios HTML */
+	@PostMapping(value = "/medicamento", consumes = "application/x-www-form-urlencoded")
+	public ResponseEntity<?> saveMedicamento(@ModelAttribute("medicamento") Medicamento medicamento, HttpServletResponse response) {
+		try {
+			medicamentoService.addMedicamento(medicamento);
+            response.sendRedirect("/listMedicamento");
+			return ResponseEntity.ok().body("Medicamento creado correctamente");
+		} catch (Exception er) {
+			return ResponseEntity.status(500).body("Error creando el medicamento: " + er.getMessage());
+		}
+	}
+
+    /*---Actualiza un medicamento del sistema y vuelve a la pantalla de listas medicamentos---*/
+    /* Se pone consumes = "application/x-www-form-urlencoded" para que funcione con formularios HTML */
+	@PutMapping(value = "/medicamento",  consumes = "application/x-www-form-urlencoded")
+    public ResponseEntity<?> updateMedicamento( @ModelAttribute("medicamento")Medicamento medicamento, HttpServletResponse response) {
+        try {
+            medicamentoService.updateMedicamento(medicamento);
+            response.sendRedirect("/listMedicamento");
+            return ResponseEntity.ok().body("Medicamento actualizado correctamente");
+        } catch (Exception er) {
+            return ResponseEntity.status(500).body("Error actualizando el medicamento: " + er.getMessage());
         }
     }
 
-    // Otra forma de eliminar una persona con el ID
-    @DeleteMapping("/medicamento/{id}")
-    public ResponseEntity<?> deletePersona(@PathVariable("id") Long id) {
-        try{
+
+	/*---Elimina un medicamento a partir de su ID y vuelve a la pantalla de listar medicamentos---*/
+	@DeleteMapping("/medicamento/{id}")
+    public ResponseEntity<?> deleteMedicamento(@PathVariable("id") Long id, HttpServletResponse response) {
+        try {
             medicamentoService.removeMedicamentoID(id);
-            return ResponseEntity.ok().body("El medicamento se ha eliminado");
-        }
-        catch(Exception e){
-            return ResponseEntity.internalServerError().body("Error al eliminar el medicamento");
+            response.sendRedirect("/listMedicamento");
+            return ResponseEntity.ok().body("Medicamento eliminado correctamente");
+        } catch (Exception er) {
+            return ResponseEntity.status(500).body("Error eliminando el medicamento: " + er.getMessage());
         }
     }
+<<<<<<< HEAD
     
 }
+=======
+}
+>>>>>>> 42179d097ce5b03f2976682107b8f09c422b795b

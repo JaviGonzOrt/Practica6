@@ -1,0 +1,22 @@
+<html xmlns:th="https://www.thymeleaf.org">
+<head> 
+    <title>Anyadir Medicamento</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="medicamento.css" rel="stylesheet"/>
+</head>
+   
+<body>
+	<h1>Anyadir Medicamento</h1>
+
+    <form th:action="@{/medicamento}" th:object="${medicamento}" th:method="post">
+    	<p>Nombre: <input type="text" th:field="${medicamento.nombre}" /></p>
+        <p>Dosis: <input type="text" th:field="${medicamento.dosis}" /></p>
+        <p>Frecuencia: <input type="text" th:field="${medicamento.frecuencia}" /></p>
+        <p>Fecha Primera Toma: <input type="date" th:field="${medicamento.fechaPrimeraToma}" /></p>
+
+        <p><input class="boton" type="submit" value="Crear Medicamento" /> 
+        <input  class="boton" type="reset" value="Reset" /></p>
+    </form>
+    <a th:href="@{/}">Atrás</a>
+</body>
+</html>
