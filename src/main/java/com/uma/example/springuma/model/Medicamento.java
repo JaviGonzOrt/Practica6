@@ -16,6 +16,11 @@ import jakarta.persistence.TemporalType;
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Medicamento {
+
+    public Medicamento(Long id){
+        this.id = id;
+    }
+
     
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
