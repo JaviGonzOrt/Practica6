@@ -58,9 +58,4 @@ public class  MedicamentoController {
             return ResponseEntity.status(500).body("Error eliminando el medicamento: " + er.getMessage());
         }
     }
-<<<<<<< HEAD
-    
 }
-=======
-}
->>>>>>> 42179d097ce5b03f2976682107b8f09c422b795b
