@@ -21,6 +21,8 @@ public class Medicamento {
         this.id = id;
     }
 
+    public Medicamento(){
+    }
     
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
