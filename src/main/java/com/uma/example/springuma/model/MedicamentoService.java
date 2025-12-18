@@ -27,14 +27,14 @@ public class MedicamentoService {
     }
 
     //  Actualiza un medicamento
-    public void updateMedicamento(Medicamento m){
+    public Medicamento updateMedicamento(Medicamento m){
         Medicamento medicamento = RepositoryMedicamento.getReferenceById(m.getId());
 		medicamento.setId(m.getId());
         medicamento.setFrecuencia(m.getFrecuencia());
         medicamento.setDosis(m.getDosis());
         medicamento.setNombre(m.getNombre());
         medicamento.setFechaPrimeraToma(m.getFechaPrimeraToma());
-        RepositoryMedicamento.save(medicamento);
+        return RepositoryMedicamento.save(medicamento);
     }
 
     // Elimina una medicamento
