@@ -120,4 +120,63 @@ void testUpdateMedicamento() {
         // Assert
         verify(repositoryMedicamento).deleteById(1L);
     }
+
+    @Test
+    @DisplayName("Añade un medicamento nulo")
+    void testAddMedicamento_Nulo() {
+        // Act
+        Medicamento resultado = medicamentoService.addMedicamento(null);
+
+        // Assert
+        assertEquals(null, resultado);
+        verify(repositoryMedicamento, org.mockito.Mockito.never()).saveAndFlush(org.mockito.Mockito.any());
+    }
+
+    @Test
+    @DisplayName("Eliminar un medicamento nulo")
+    void testRemoveMedicamento_Nulo() {
+        // Act
+        medicamentoService.removeMedicamento(null);
+
+        // Assert
+        verify(repositoryMedicamento, org.mockito.Mockito.never()).delete(org.mockito.Mockito.any());
+    }
+
+    @Test
+    @DisplayName("Elimina un medicamento por ID inexistente")
+    void testRemoveMedicamentoById_NoExiste() {
+        // Act
+        medicamentoService.removeMedicamentoID(999L);
+
+        // Assert
+        verify(repositoryMedicamento).deleteById(999L);
+    }
+
+    @Test
+    @DisplayName("Añade un medicamento con nombre correctamente")
+    void testAddMedicamento_ConNombre() {
+        // Arrange
+        Medicamento medicamento = new Medicamento(1L);
+        medicamento.setNombre("Amoxicilina");
+        when(repositoryMedicamento.saveAndFlush(medicamento)).thenReturn(medicamento);
+
+        // Act
+        Medicamento resultado = medicamentoService.addMedicamento(medicamento);
+
+        // Assert
+        assertEquals("Amoxicilina", resultado.getNombre());
+    }
+
+    @Test
+    @DisplayName("Busca un medicamento con ID negativo")
+    void testGetMedicamento_IdNegativo() {
+        // Arrange
+        when(repositoryMedicamento.findById(-1L)).thenReturn(java.util.Optional.empty());
+
+        // Act
+        Medicamento resultado = medicamentoService.getMedicamento(-1L);
+
+        // Assert
+        assertEquals(null, resultado);
+    }
 }
