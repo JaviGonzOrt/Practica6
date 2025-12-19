@@ -18,7 +18,7 @@ public class MedicamentoService {
 
     // Devuelve un medicamento por ID
     public Medicamento getMedicamento(Long id){
-        return RepositoryMedicamento.getReferenceById(id);
+        return RepositoryMedicamento.findById(id).orElse(null);
     }
 
     // Crea un medicamento

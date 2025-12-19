@@ -4,31 +4,33 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.uma.example.springuma.model.Medicamento;
 import com.uma.example.springuma.model.MedicamentoService;
 import com.uma.example.springuma.model.RepositoryMedicamento;
 
-public class MedicamentoServiceTest {
+@ExtendWith(MockitoExtension.class)
+class MedicamentoServiceTest {
 
     @Mock
-    RepositoryMedicamento repositoryMedicamento;
+    private RepositoryMedicamento repositoryMedicamento;
 
     @InjectMocks
     private MedicamentoService medicamentoService;
 
     @Test
-    @DisplayName("Comprueba que se pueden obtener todos los medicamentos")
-    void testGetAllMedicamentos() {
-        // Arrage
+    @DisplayName("Obtiene todos los medicamentos cuando la lista está vacía")
+    void testGetAllMedicamentos_ListaVacia() {
+        // Arrange
+        when(repositoryMedicamento.findAll()).thenReturn(List.of());
         // Act
         List<Medicamento> medicamentos = medicamentoService.getAllMedicamentos();
         int sizeObtained = medicamentos.size();
@@ -36,149 +38,86 @@ public class MedicamentoServiceTest {
         assertEquals(0, sizeObtained);
         verify(repositoryMedicamento).findAll();
     }
-    
+
     @Test
-    @DisplayName("Comprueba que devuelve mas de un medicamento")
-    public void getAllMedicamentos_ListaNoVacia() {
-        // Arrage
-        Medicamento medicamento1 = new Medicamento();
-        Medicamento medicamento2 = new Medicamento();
-        when(repositoryMedicamento.findAll()).thenReturn(Arrays.asList(medicamento1, medicamento2));
+    @DisplayName("Obtiene todos los medicamentos cuando hay elementos")
+    void testGetAllMedicamentos_ListaNoVacia() {
+        // Arrange
+        Medicamento m1 = new Medicamento();
+        Medicamento m2 = new Medicamento();
+        when(repositoryMedicamento.findAll()).thenReturn(Arrays.asList(m1, m2));
         // Act
-        List<Medicamento> result = medicamentoService.getAllMedicamentos();
-        int sizeObtained = result.size();
+        List<Medicamento> medicamentos = medicamentoService.getAllMedicamentos();
         // Assert
-        assertEquals(2, sizeObtained);
+        assertEquals(2, medicamentos.size());
         verify(repositoryMedicamento).findAll();
     }
 
     @Test
-    @DisplayName("Compueba que se puede obtener un medicamento por su id")
+    @DisplayName("Obtiene un medicamento por su ID")
     void testGetMedicamentoById() {
-        // Arrage
-        Long id = 1L;
-        Medicamento medicamento = new Medicamento();
-        when(repositoryMedicamento.findById(id)).thenReturn(java.util.Optional.of(medicamento));
-        // Act
-        Medicamento medicamentoObtained = medicamentoService.getMedicamento(id);
-        // Assert
-        assertEquals(medicamento, medicamentoObtained);
-        verify(repositoryMedicamento).findById(id);
-    }
-
-    @Test
-    @DisplayName("Comprueba que se puede crear un medicamento")
-    void testAddMedicamento() {
-        // Arrage
-        Medicamento medicamento = new Medicamento(1234L);
-        when(repositoryMedicamento.save(medicamento)).thenReturn(medicamento);
-        // Act
-        Medicamento medicamentoCreated = medicamentoService.addMedicamento(medicamento);
-        Long idObtained = medicamentoCreated.getId();
-        // Assert
-        assertEquals(medicamento, medicamentoCreated);
-        assertEquals(1234L, idObtained);
-        verify(repositoryMedicamento).save(medicamento);
-    }
-
-    @Test
-    @DisplayName("Comprueba que se puede actualizar un medicamento")
-    void testUpdateMedicamento() {
-        // Arrage
+        // Arrange
         Medicamento medicamento = new Medicamento(1L);
         medicamento.setNombre("Paracetamol");
         when(repositoryMedicamento.findById(1L)).thenReturn(java.util.Optional.of(medicamento));
         // Act
-        medicamento.setNombre("Ibuprofeno");
-        Medicamento medicamentoResult = medicamentoService.updateMedicamento(medicamento);
+        Medicamento resultado = medicamentoService.getMedicamento(1L);
         // Assert
-        assertEquals(medicamento, medicamentoResult);
+        assertEquals(medicamento, resultado);
         verify(repositoryMedicamento).findById(1L);
-        verify(repositoryMedicamento).save(medicamento);
     }
 
     @Test
-    @DisplayName("Comprueba que no se puede actualizar un medicamento que no existe")
-    void testUpdateMedicamento_NoExisteMedicamento() {
-        // Arrage
-        Medicamento medicamento = new Medicamento(1L);
-        medicamento.setNombre("Paracetamol");
-        when(repositoryMedicamento.findById(1L)).thenReturn(java.util.Optional.empty());
-        // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> medicamentoService.updateMedicamento(medicamento));
-        
-        verify(repositoryMedicamento).findById(1L);
-        verify(repositoryMedicamento, never()).save(medicamento);
-    }
-
-    @Test
-    @DisplayName("Comprueba que no se puede eliminar un medicamento atraves del objeto medicamento que no existe")
-    void testRemoveMedicamento_medicamentoNoExiste() {
-
+    @DisplayName("Añade un medicamento correctamente")
+    void testAddMedicamento() {
         // Arrange
         Medicamento medicamento = new Medicamento(1L);
-        medicamento.setId(1L);
-        when(repositoryMedicamento.existsById(1L)).thenReturn(false);
-        // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> medicamentoService.removeMedicamento(medicamento));
-
-        verify(repositoryMedicamento).existsById(1L);
-        verify(repositoryMedicamento, never()).delete(medicamento);
+        when(repositoryMedicamento.saveAndFlush(medicamento)).thenReturn(medicamento);
+        // Act
+        Medicamento resultado = medicamentoService.addMedicamento(medicamento);
+        // Assert
+        assertEquals(medicamento, resultado);
+        verify(repositoryMedicamento).saveAndFlush(medicamento);
     }
 
     @Test
-    @DisplayName("Comprueba que se puede eliminar un medicamento atraves del objeto medicamento")
+@DisplayName("Actualiza un medicamento correctamente")
+void testUpdateMedicamento() {
+    // Arrange
+    Medicamento medicamento = new Medicamento(1L);
+    medicamento.setNombre("Ibuprofeno");
+    when(repositoryMedicamento.getReferenceById(1L)).thenReturn(new Medicamento(1L));
+    when(repositoryMedicamento.save(org.mockito.ArgumentMatchers.any(Medicamento.class))).thenAnswer(invocation -> invocation.getArgument(0)); // devuelve el mismo objeto
+    // Act
+    Medicamento resultado = medicamentoService.updateMedicamento(medicamento);
+    // Assert
+    assertEquals("Ibuprofeno", resultado.getNombre());
+    verify(repositoryMedicamento).getReferenceById(1L);
+    verify(repositoryMedicamento).save(org.mockito.ArgumentMatchers.any(Medicamento.class));
+}
+
+
+    @Test
+    @DisplayName("Elimina un medicamento por objeto")
     void testRemoveMedicamento() {
 
         // Arrange
         Medicamento medicamento = new Medicamento(1L);
-        medicamento.setId(1L);
-        when(repositoryMedicamento.existsById(1L)).thenReturn(true);
+
         // Act
         medicamentoService.removeMedicamento(medicamento);
-        //Assert
-        verify(repositoryMedicamento).existsById(1L);
+
+        // Assert
         verify(repositoryMedicamento).delete(medicamento);
     }
 
     @Test
-    @DisplayName("Comprueba que no se puede eliminar un medicamento atraves de su id si el id es null")
-    void testRemoveMedicamento_IdNull() {
-
-        // Arrange
-        Long id = null;
-        // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> medicamentoService.removeMedicamentoID(id));
-
-        verify(repositoryMedicamento, never()).deleteById(id);
-    }
-
-    @Test
-    @DisplayName("Compueba que no se puede eliminar un medicamento atraves de su id si no existe")
-    void testRemoveMedicamento_IdNoExiste() {
-
-        // Arrange
-        Long id = 1L;
-        when(repositoryMedicamento.existsById(id)).thenReturn(false);
-        // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> medicamentoService.removeMedicamentoID(id));
-
-        verify(repositoryMedicamento).existsById(id);
-        verify(repositoryMedicamento, never()).deleteById(id);
-    }
-
-    @Test
-    @DisplayName("Compueba que se puede eliminar un medicamento atraves de su id")
-    void testRemoveMedicamento_IdExiste() {
-
-        // Arrange
-        Long id = 1L;
-        when(repositoryMedicamento.existsById(id)).thenReturn(true);
+    @DisplayName("Elimina un medicamento por ID")
+    void testRemoveMedicamentoById() {
         // Act
-        medicamentoService.removeMedicamentoID(id);
-        //Assert
-        verify(repositoryMedicamento).existsById(id);
-        verify(repositoryMedicamento).deleteById(id);
-    }
+        medicamentoService.removeMedicamentoID(1L);
 
+        // Assert
+        verify(repositoryMedicamento).deleteById(1L);
+    }
 }

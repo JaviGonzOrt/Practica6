@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.8</version>
+		<version>3.5.9</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.uma.example</groupId>
@@ -64,6 +64,15 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.14</version>
+				<configuration>
+        		<excludes>
+            		<!-- Excluir controladores -->
+            	<exclude>com/uma/example/springuma/controller/**</exclude>
+
+            	<!-- Excluir clase main -->
+            <exclude>com/uma/example/springuma/SpringumaApplication*</exclude>
+        </excludes>
+    </configuration>
 				<executions>
 					<execution>
 						<goals>

@@ -1,6 +1,8 @@
 package com.uma.example.springuma.medicamento;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -74,6 +76,16 @@ public class MedicamentoTest {
         java.util.Date obtenedFecha = medicamento.getFechaPrimeraToma();
         // assert
         assertEquals(expectedFecha, obtenedFecha);
+    }
+
+    @Test
+    @DisplayName("Constructor vacío crea un medicamento sin ID")
+    void testConstructorVacio() {
+        // Arrange & Act
+        Medicamento medicamento = new Medicamento();
+
+        // Assert
+        assertNull(medicamento.getId());
     }
     
 }
