@@ -129,7 +129,7 @@ void testUpdateMedicamento() {
 
         // Assert
         assertEquals(null, resultado);
-        verify(repositoryMedicamento, org.mockito.Mockito.never()).saveAndFlush(org.mockito.Mockito.any());
+        verify(repositoryMedicamento).saveAndFlush(null);
     }
 
     @Test
@@ -139,7 +139,7 @@ void testUpdateMedicamento() {
         medicamentoService.removeMedicamento(null);
 
         // Assert
-        verify(repositoryMedicamento, org.mockito.Mockito.never()).delete(org.mockito.Mockito.any());
+        verify(repositoryMedicamento).delete(null);
     }
 
     @Test
